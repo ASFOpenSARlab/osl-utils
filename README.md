@@ -7,7 +7,7 @@ Using [HyP3's actions](https://github.com/ASFHyP3/actions) as an example to work
 
 A collection of [reusable workflows](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) that are shared accros this orginization.
 
-### `[reusable-setup-env.yaml](.github/workflows/reusable-setup-env.yaml)`
+### [`reusable-setup-env.yaml`](.github/workflows/reusable-setup-env.yaml)
 
 Sets up variables/tags for each repo. Use like:
 
