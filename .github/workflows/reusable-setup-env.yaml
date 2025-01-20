@@ -1,0 +1,106 @@
+---
+name: Reusable - Setup Environment Variables
+
+on:                # yamllint disable-line rule:truthy
+  workflow_call:
+    inputs:
+      tagname:
+        required: false
+        default: ${{ github.ref_name }}
+        type: string
+      aws-region:
+        required: false
+        default: "us-west-2"
+        type: string
+
+
+    outputs:
+
+      branchtag:
+        description: "Branch or Tag key for docker etc"
+        value: ${{ jobs.setup.outputs.branchtag }}
+
+      environment:
+        description: "Environment maturity (prod/test/dev)"
+        value: ${{ jobs.setup.outputs.environment }}
+
+      deploy_prefix:
+        description: "Prefix of the Deployment (prod/test/<branch>)"
+        value: ${{ jobs.setup.outputs.deploy_prefix }}
+
+      shortsha:
+        description: "Short SHA for dockertag etc"
+        value: ${{ jobs.setup.outputs.shortsha }}
+
+      aws-region:
+        value: ${{ inputs.aws-region }}
+        description: "Which AWS region this action is using."
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      branchtag: ${{ steps.branchtag.outputs.branchtag }}
+      environment: ${{ steps.environment.outputs.environment }}
+      deploy_prefix: ${{ steps.deploy_prefix.outputs.deploy_prefix }}
+      shortsha: ${{ steps.shortsha.outputs.shortsha }}
+
+    env:
+      TAG_NAME_IN: ${{ inputs.tagname }}
+
+    steps:
+      - name: Figure out branchtag
+        id: branchtag
+        run: |
+          echo "DEBUG - TAG_NAME_IN: $TAG_NAME_IN"
+
+          # Get the Base Tag Name:
+          if [[ "$TAG_NAME_IN" == */* && "$TAG_NAME_IN" != v[[:digit:]]* ]]; then
+            export TAG_NAME=`echo $TAG_NAME_IN | cut -d '/' -f 1`
+          else
+            export TAG_NAME=$TAG_NAME_IN
+          fi
+
+          # If this is from a PR, make sure it begins with a letter for AWS Stacks:
+          if [[ ${{ github.event_name }}  == 'pull_request' ]]; then
+            export TAG_NAME="pr-${TAG_NAME}"
+          fi
+
+          echo "Deployment Tag Name: $TAG_NAME"
+          echo "branchtag=$TAG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Figure out environment
+        id: environment
+        run: |
+          if [[ "${{ steps.branchtag.outputs.branchtag }}" =~ ^v[[:digit:]] ]]; then
+            export ENVIRONMENT='prod'
+          elif [[ "${{ steps.branchtag.outputs.branchtag }}" == 'main' ]]; then
+            export ENVIRONMENT='test'
+          else
+            export ENVIRONMENT='dev'
+          fi
+          echo "Environment: $ENVIRONMENT"
+          echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
+
+      - name: Figure out deploy_prefix
+        id: deploy_prefix
+        run: |
+          echo "DEBUG - branchtag: ${{ steps.branchtag.outputs.branchtag }}"
+          if [[ "${{ steps.environment.outputs.environment }}" == 'prod' ]]; then
+            export DEPLOY_PREFIX="prod"
+          elif [[ "${{ steps.branchtag.outputs.branchtag }}" == 'main' ]]; then
+            export DEPLOY_PREFIX="test"
+          else
+            export DEPLOY_PREFIX="${{ steps.branchtag.outputs.branchtag }}"
+          fi
+          # Replace non-alphanumeric characters with dashes:
+          export DEPLOY_PREFIX="${DEPLOY_PREFIX//[^[:alnum:]]/-}"
+          echo "deploy_prefix: $DEPLOY_PREFIX"
+          echo "deploy_prefix=$DEPLOY_PREFIX" >> $GITHUB_OUTPUT
+
+      - name: Make shortsha
+        id: shortsha
+        run: |
+          export SHORTSHA=$(echo '${{ github.sha }}' | cut -c1-7)
+          echo "shortsha=$SHORTSHA" >> $GITHUB_OUTPUT
+          echo "shortsha: $SHORTSHA"
