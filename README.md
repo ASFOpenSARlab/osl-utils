@@ -21,7 +21,7 @@ on:
 
 jobs:
   call-setup-env-workflow:
-    # Docs at: https://github.com/ASFOpenSARlab/osl-utils/README.md#reusable-setup-envyaml
+    # Docs at: https://github.com/ASFOpenSARlab/osl-utils?tab=readme-ov-file#reusable-setup-envyaml
     uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-bump-version.yml@v0.15.0
     with:
       tagname: ${{ github.ref_name } # Optional; default shown
