@@ -22,8 +22,14 @@ on:
 jobs:
   call-setup-env-workflow:
     # Docs at: https://github.com/ASFOpenSARlab/osl-utils?tab=readme-ov-file#reusable-setup-envyaml
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-bump-version.yml@v0.15.0
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-setup-env.yaml@v0.0.1
     with:
-      tagname: ${{ github.ref_name } # Optional; default shown
-      aws-region: us-west-2          # Optional; default shown
+      tagname: ${{ github.ref_name }} # Optional; default shown
+      aws-region: us-west-2           # Optional; default shown
 ```
+
+## Other Workflows
+
+### [`docker-build.yaml`](.github/workflows/docker-build.yaml)
+
+This is to build a docker container, that has all our CloudFormation/etc tools, that we can use inside other actions or locally to have a similar environment.
