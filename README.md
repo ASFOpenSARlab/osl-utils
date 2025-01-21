@@ -64,3 +64,5 @@ jobs:
       - run: echo "Inside the Custom Image!"
       # ...
 ```
+
+When the image is built, it's tagged with the info from [`reusable-setup-env.yaml`](.github/workflows/reusable-setup-env.yaml). You can use this to test changes here in other actions (Change their tag from `v0.0.2` to `dev` for example), before merging the changes up the maturities here.
