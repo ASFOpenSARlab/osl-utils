@@ -28,6 +28,8 @@ jobs:
       aws-region: us-west-2           # Optional; default shown
 ```
 
+This is used to figure out what environment to use, figure out when you're running on a tag, etc.
+
 ## Other Workflows
 
 ### [`docker-build.yaml`](.github/workflows/docker-build.yaml)
@@ -36,18 +38,19 @@ This is to build a docker container, that has all our CloudFormation/etc tools, 
 
 ```yaml
 jobs:
-  # Make sure the container uri is all lowercase:
+  # This job makes sure the container uri is all lowercase:
   docker-tag:
+    # Docs at: https://github.com/ASFOpenSARlab/osl-utils?tab=readme-ov-file#docker-buildyaml
     env:
-      TOOLS_REPO: ghcr.io/asfopensarlab/osl-utils
-      TOOLS_REPO_TAG: v0.0.2
+      IMAGE_REPO: ghcr.io/ASFOpenSARlab/osl-utils
+      IMAGE_REPO_TAG: v0.0.2
     runs-on: ubuntu-latest
     outputs:
       container-uri: ${{ steps.container.outputs.uri }}
     steps:
       - name: Save Container Info
         id: container
-        run: echo "uri=${{ env.TOOLS_REPO }}:${{ env.TOOLS_REPO_TAG }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
+        run: echo "uri=${{ env.IMAGE_REPO }}:${{ env.IMAGE_REPO_TAG }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
 
   # Run the actions steps inside of the container:
   your-job-here:
@@ -55,10 +58,12 @@ jobs:
     container:
       image: ${{ needs.docker-tag.outputs.container-uri }}
       credentials:
-        username: BOT_ACCOUNT_USERNAME
+        username: ASFOpenSARlab-bot
         password: ${{ secrets.PAT_PACKAGES_READ_ONLY }}
     steps:
       - uses: actions/checkout@v4
       - run: echo "Inside the Custom Image!"
       # ...
 ```
+
+When the image is built, it's tagged with the info from [`reusable-setup-env.yaml`](.github/workflows/reusable-setup-env.yaml). You can use this to test changes here in other actions (Change their tag from `v0.0.2` to `dev` for example), before merging the changes up the maturities here.
