@@ -40,6 +40,7 @@ This is to build a docker container, that has all our CloudFormation/etc tools, 
 jobs:
   # This job makes sure the container uri is all lowercase:
   docker-tag:
+    # Docs at: https://github.com/ASFOpenSARlab/osl-utils?tab=readme-ov-file#docker-buildyaml
     env:
       IMAGE_REPO: ghcr.io/ASFOpenSARlab/osl-utils
       IMAGE_REPO_TAG: v0.0.2
