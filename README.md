@@ -58,7 +58,7 @@ jobs:
     container:
       image: ${{ needs.docker-tag.outputs.container-uri }}
       credentials:
-        username: BOT_ACCOUNT_USERNAME
+        username: ASFOpenSARlab-bot
         password: ${{ secrets.PAT_PACKAGES_READ_ONLY }}
     steps:
       - uses: actions/checkout@v4
