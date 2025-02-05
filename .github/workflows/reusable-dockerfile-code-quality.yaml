@@ -1,0 +1,20 @@
+on:
+  workflow_call:
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Packages
+        run: |
+          docker pull hadolint/hadolint:latest-debian
+
+      - name: Lint Dockerfiles
+        run: |-
+          for dockerfile in $(find . -name "Dockerfile"); do
+            echo "Checking $dockerfile:";
+            docker run --rm -i hadolint/hadolint < "$dockerfile";
+          done
