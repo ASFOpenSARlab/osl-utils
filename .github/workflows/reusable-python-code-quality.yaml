@@ -36,5 +36,4 @@ jobs:
           python -m pip install ruff
 
       - name: ruff format
-        if: ${{ !cancelled() }}
         run: ruff format --diff || (echo 'Run `ruff format` to automatically re-format.' && exit 1)
