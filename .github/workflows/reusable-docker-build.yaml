@@ -16,6 +16,11 @@ on:
         required: false
         type: string
         default: "us-west-2"
+      # An extra input ONLY because you can't check secrets in if blocks for some reason...
+      push-to-aws:
+        required: false
+        type: boolean
+        default: false
 
     # IF set, push to AWS too:
     secrets:
@@ -75,16 +80,16 @@ jobs:
           cache-to: type=gha,mode=max
       
       # Optional: Push it to AWS too:
-      - if: inputs.aws-access-key-id && inputs.aws-secret-access-key
+      - if: inputs.push-to-aws
         uses: aws-actions/configure-aws-credentials@v4
         id: aws-creds
         with:
-          aws-access-key-id: ${{ inputs.aws-access-key-id }}
-          aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+          aws-access-key-id: ${{ secrets.aws-access-key-id }}
+          aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
           aws-region: ${{ inputs.aws-region }}
 
       # Since the last one just finished, this should ALWAYS cache-hit:
-      - if: inputs.aws-access-key-id && inputs.aws-secret-access-key
+      - if: inputs.push-to-aws
         uses: docker/build-push-action@v5
         with:
           file: ${{ inputs.dockerfile }}
