@@ -12,18 +12,18 @@ on:
         required: false
         type: string
         default: "."
-
-      # IF set, push to AWS too:
-      aws-access-key-id:
-        required: false
-        type: string
-      aws-secret-access-key:
-        required: false
-        type: string
       aws-region:
         required: false
         type: string
         default: "us-west-2"
+
+    # IF set, push to AWS too:
+    secrets:
+      aws-access-key-id:
+        required: false
+      aws-secret-access-key:
+        required: false
+
 
 jobs:
 
