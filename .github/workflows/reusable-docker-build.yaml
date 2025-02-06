@@ -92,7 +92,7 @@ jobs:
           aws-region: ${{ inputs.aws-region }}
 
       - if: inputs.push-to-aws
-        uses: aws-actions/amazon-ecr-login@@v2
+        uses: aws-actions/amazon-ecr-login@v2
 
       # Since the last one just finished, this should ALWAYS cache-hit:
       - if: inputs.push-to-aws
