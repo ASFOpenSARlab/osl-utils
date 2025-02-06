@@ -1,0 +1,47 @@
+on:
+  workflow_call:
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install djlint
+        run: |
+          python -m pip install --upgrade pip
+          pip install djlint
+
+      - name: Lint jinja Files
+        run: |
+          find . -name '*.j2' | while read file; do
+              djlint $file --lint
+          done
+
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install djlint
+        run: |
+          python -m pip install --upgrade pip
+          pip install djlint
+
+      - name: Format jinja Files
+        run: |
+          # To fix, replace --check with --reformat
+          djlint . --check --extension=j2 || (echo 'Run `djlint . --check --extension=j2` to automatically re-format.' && exit 1)
+          djlint . --check --extension=html || (echo 'Run `djlint . --check --extension=html` to automatically re-format.' && exit 1)
