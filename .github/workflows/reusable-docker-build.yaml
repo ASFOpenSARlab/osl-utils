@@ -1,7 +1,7 @@
 on:
   workflow_call:
     inputs:
-      image_name:
+      image-name:         # i.e osl-portal/nginx
         required: true
         type: string
       dockerfile:
@@ -12,6 +12,21 @@ on:
         required: false
         type: string
         default: "."
+
+      # IF set, push to AWS too:
+      aws-access-key-id:
+        required: false
+        type: string
+      aws-secret-access-key:
+        required: false
+        type: string
+      aws-account-id:
+        required: false
+        type: string
+      aws-region:
+        required: false
+        type: string
+        default: "us-west-2"
 
 jobs:
 
@@ -27,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_ORG: ghcr.io/ASFOpenSARlab
-      IMAGE_REPO: ${{ inputs.image_name }}
+      IMAGE_REPO: ${{ inputs.image-name }}
     outputs:
       container-uri: ${{ steps.container.outputs.uri }}
     steps:
@@ -59,5 +74,29 @@ jobs:
             ${{ steps.container.outputs.uri }}:${{ needs.setup.outputs.shortsha }}
             ${{ steps.container.outputs.uri }}:${{ needs.setup.outputs.branchtag }}
             ${{ steps.container.outputs.uri }}:${{ needs.setup.outputs.environment }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      # Optional: Push it to AWS too:
+      - if: inputs.aws-access-key-id && inputs.aws-secret-access-key
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ inputs.aws-access-key-id }}
+          aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+          aws-region: ${{ inputs.aws-region }}
+
+      # Since the last one just finished, this should ALWAYS cache-hit:
+      - if: inputs.aws-access-key-id && inputs.aws-secret-access-key
+        uses: docker/build-push-action@v5
+        with:
+          file: ${{ inputs.dockerfile }}
+          context: ${{ inputs.context }}
+          push: true
+          pull: true         # Always pull the latest base image before building
+          tags: |
+            ${{ inputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.deploy_prefix }}
+            ${{ inputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.shortsha }}
+            ${{ inputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.branchtag }}
+            ${{ inputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.environment }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

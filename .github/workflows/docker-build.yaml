@@ -15,4 +15,4 @@ jobs:
   docker-build:
     uses: ./.github/workflows/reusable-docker-build.yaml
     with:
-      image_name: "osl-utils"
+      image-name: "osl-utils"
