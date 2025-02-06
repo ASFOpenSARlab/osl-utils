@@ -1,5 +1,14 @@
 on:
-    workflow_call: {}
+  workflow_call:
+    inputs:
+      dockerfile:
+        required: true
+        type: string
+        default: Dockerfile
+      context:
+        required: true
+        type: string
+        default: "."
 
 jobs:
 
@@ -38,10 +47,10 @@ jobs:
       # Actually Build it:
       - uses: docker/build-push-action@v5
         with:
+          file: ${{ inputs.dockerfile }}
+          context: ${{ inputs.context }}
           push: true
-          context: .         # Path to the Dockerfile
           pull: true         # Always pull the latest base image before building
-          file: Dockerfile
           tags: |
             ${{ steps.container.outputs.uri }}:${{ needs.setup.outputs.deploy_prefix }}
             ${{ steps.container.outputs.uri }}:${{ needs.setup.outputs.shortsha }}
