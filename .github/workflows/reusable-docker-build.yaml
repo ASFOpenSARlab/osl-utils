@@ -1,12 +1,15 @@
 on:
   workflow_call:
     inputs:
-      dockerfile:
+      image_name:
         required: true
+        type: string
+      dockerfile:
+        required: false
         type: string
         default: Dockerfile
       context:
-        required: true
+        required: false
         type: string
         default: "."
 
@@ -24,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_ORG: ghcr.io/ASFOpenSARlab
-      IMAGE_REPO: ${{ github.event.repository.name }}
+      IMAGE_REPO: ${{ inputs.image_name }}
     outputs:
       container-uri: ${{ steps.container.outputs.uri }}
     steps:
