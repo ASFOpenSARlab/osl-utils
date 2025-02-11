@@ -48,8 +48,8 @@ jobs:
     outputs:
       container-uri: ${{ steps.container.outputs.uri }}
     steps:
-      # Pull the Dockerfile:
-      - uses: actions/checkout@v4
+      # # Pull the Dockerfile:
+      # - uses: actions/checkout@v4
 
       # Setup Docker Building on Actions:
       - uses: docker/setup-qemu-action@v2
