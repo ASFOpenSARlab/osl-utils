@@ -16,6 +16,9 @@ on:
         required: false
         type: string
         default: "us-west-2"
+      build-args:
+        required: false
+        type: string
       # An extra input ONLY because you can't check secrets in if blocks for some reason...
       push-to-aws:
         required: false
@@ -48,8 +51,8 @@ jobs:
     outputs:
       container-uri: ${{ steps.container.outputs.uri }}
     steps:
-      # # Pull the Dockerfile:
-      # - uses: actions/checkout@v4
+      # Pull the Dockerfile:
+      - uses: actions/checkout@v4
 
       # Setup Docker Building on Actions:
       - uses: docker/setup-qemu-action@v2
@@ -71,6 +74,7 @@ jobs:
           context: ${{ inputs.context }}
           push: true
           pull: true         # Always pull the latest base image before building
+          build-args: ${{ inputs.build-args }}
           tags: |
             ${{ steps.container.outputs.uri }}:${{ needs.setup.outputs.deploy_prefix }}
             ${{ steps.container.outputs.uri }}:${{ needs.setup.outputs.shortsha }}
