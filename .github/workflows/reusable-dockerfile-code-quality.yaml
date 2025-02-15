@@ -16,5 +16,5 @@ jobs:
         run: |-
           for dockerfile in $(find . -name "Dockerfile"); do
             echo "Checking $dockerfile:";
-            docker run --rm -i hadolint/hadolint < "$dockerfile";
+            docker run --rm -i --volume ./hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint < "$dockerfile";
           done
