@@ -106,6 +106,7 @@ jobs:
           context: ${{ inputs.context }}
           push: true
           pull: true         # Always pull the latest base image before building
+          build-args: ${{ inputs.build-args }}
           tags: |
             ${{ steps.aws-creds.outputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.deploy_prefix }}
             ${{ steps.aws-creds.outputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.shortsha }}
