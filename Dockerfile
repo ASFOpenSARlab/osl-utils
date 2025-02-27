@@ -17,7 +17,7 @@ RUN npm install -g npm && \
     npm install -g aws-cdk
 
 COPY ./requirements.txt /requirements.txt
-COPY ./requirements-dev.txt /requirements-dev.txt
 
+# Install wheel first so it can be used with the rest of the packages
 RUN python3 -m pip install --no-cache-dir --upgrade wheel && \
-    python3 -m pip install --no-cache-dir -r /requirements.txt -r /requirements-dev.txt
+    python3 -m pip install --no-cache-dir -r /requirements.txt
