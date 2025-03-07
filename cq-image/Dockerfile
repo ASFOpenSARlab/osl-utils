@@ -15,7 +15,8 @@ RUN apt-get install -y --no-install-recommends \
     python3="3.12.3-0ubuntu2" \
     python3-pip="24.0+dfsg-1ubuntu1.1" \
     shellcheck="0.9.0-1" \
-    shfmt="3.8.0-1" && \
+    shfmt="3.8.0-1" \
+    build-essential="12.10ubuntu1" && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ARG hadolint_version="v2.12.0"
@@ -33,3 +34,6 @@ RUN pip install --no-cache-dir --upgrade \
     djlint=="1.36.4" \
     ruff=="0.9.6" \
     yamllint=="1.35.1"
+
+WORKDIR /app
+COPY Makefile /app/Makefile
