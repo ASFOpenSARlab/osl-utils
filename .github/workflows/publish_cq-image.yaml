@@ -21,3 +21,4 @@ jobs:
     with:
       image-name: "osl-cq-image"
       context: "cq-image"
+      file: "cq-image/Dockerfile"
