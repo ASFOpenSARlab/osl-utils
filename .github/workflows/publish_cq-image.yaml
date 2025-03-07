@@ -12,12 +12,12 @@ on:
 
 jobs:
   setup:
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-setup-env.yaml@v0.0.4
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-setup-env.yaml@v0.0.6
 
   docker-build-containers:
     needs:
       - setup
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-docker-build.yaml@v0.0.4
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-docker-build.yaml@v0.0.6
     with:
       image-name: "osl-cq-image"
       context: "cq-image"
