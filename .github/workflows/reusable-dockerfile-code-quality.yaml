@@ -5,7 +5,7 @@ jobs:
   linting:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/asfopensarlab/osl-cq-image:test
+      image: ghcr.io/asfopensarlab/osl-cq-image:dev
       volumes:
         - ${{ github.workspace }}:/code
     steps:
