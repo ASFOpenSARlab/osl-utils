@@ -6,8 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/asfopensarlab/osl-cq-image:test
-      env:
-        GITHUB_WORKSPACE: /code
+      volumes:
+        - ${{ github.workspace }}:/code
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/asfopensarlab/osl-cq-image:test
-      env:
-        GITHUB_WORKSPACE: /code
+      volumes:
+        - ${{ github.workspace }}:/code
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
