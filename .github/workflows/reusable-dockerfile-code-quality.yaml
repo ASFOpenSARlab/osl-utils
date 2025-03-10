@@ -10,6 +10,9 @@ jobs:
     container:
       image: ghcr.io/asfopensarlab/osl-cq-image:test
     steps:
+      - name: Make `/code` directory
+        run: mkdir /code
+
       - name: Checkout Code
         uses: actions/checkout@v4
 
