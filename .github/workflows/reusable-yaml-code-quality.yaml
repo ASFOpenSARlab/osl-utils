@@ -8,7 +8,7 @@ jobs:
   linting:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/asfopensarlab/osl-cq-image
+      image: ghcr.io/asfopensarlab/osl-cq-image@test
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -19,7 +19,7 @@ jobs:
   formatting:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/asfopensarlab/osl-cq-image
+      image: ghcr.io/asfopensarlab/osl-cq-image@test
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
