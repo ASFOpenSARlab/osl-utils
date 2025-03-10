@@ -73,7 +73,7 @@ shell_format_fix:
 	shfmt -w /code
 
 yaml_lint:
-	-for yamlfile in $$(find . -name '*.yaml'); do \
+	-for yamlfile in $$(bash -c 'find /code -name "*.yaml"'); do \
 		yamllint $$yamlfile ; \
 	done
 
