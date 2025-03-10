@@ -14,7 +14,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Lint yaml Files
-        run: make yaml_lint
+        run: |
+          cd /app
+          make yaml_lint
 
   formatting:
     runs-on: ubuntu-latest

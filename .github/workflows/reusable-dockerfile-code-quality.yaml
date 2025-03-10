@@ -1,20 +1,19 @@
 on:
   workflow_call:
 
+env:
+  GITHUB_WORKSPACE: '/code'
+
 jobs:
   linting:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/asfopensarlab/osl-cq-image@test
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Packages
-        run: |
-          docker pull hadolint/hadolint:latest-debian
-
       - name: Lint Dockerfiles
-        run: |-
-          for dockerfile in $(find . -name "Dockerfile"); do
-            echo "Checking $dockerfile:";
-            docker run --rm -i --volume ./hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint < "$dockerfile";
-          done
+        run: |
+          cd /app
+          make docker_lint
