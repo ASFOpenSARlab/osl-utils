@@ -83,7 +83,12 @@ yaml_lint:
 	done
 
 yaml_format_check:
-	yamlfmt -dry /code
+	yamlfmt -dry /code | tee out.txt && \
+	if [ $$(cat out.txt | wc -l) -eq 0 ]; then \
+		exit 0; \
+	else \
+		exit 1; \
+	fi
 
 yaml_format_fix:
 	yamlfmt /code
