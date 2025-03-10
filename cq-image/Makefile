@@ -66,6 +66,7 @@ python_format_fix:
 
 shell_lint:
 	for shellfile in $$(bash -c 'find /code -name "*.sh"'); do \
+		echo "Checking $$shellfile:"; \
 		shellcheck $$shellfile ; \
 	done
 
@@ -76,7 +77,8 @@ shell_format_fix:
 	shfmt -w /code
 
 yaml_lint:
-	-for yamlfile in $$(bash -c 'find /code -name "*.yaml"'); do \
+	for yamlfile in $$(bash -c 'find /code -name "*.yaml"'); do \
+		echo "Checking $$yamlfile:"; \
 		yamllint $$yamlfile ; \
 	done
 
