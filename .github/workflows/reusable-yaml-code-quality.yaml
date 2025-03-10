@@ -1,14 +1,12 @@
 on:
   workflow_call:
 
-env:
-  GITHUB_WORKSPACE: '/code'
-
 jobs:
   linting:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/asfopensarlab/osl-cq-image:test
+      volumes: $GITHUB_WORKSPACE:/code
     steps:
       - name: Make `/code` directory
         run: mkdir /code
@@ -25,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/asfopensarlab/osl-cq-image:test
+      volumes: $GITHUB_WORKSPACE:/code
     steps:
       - name: Make `/code` directory
         run: mkdir /code
