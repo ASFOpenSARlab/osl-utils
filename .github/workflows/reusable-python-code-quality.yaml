@@ -6,36 +6,30 @@ on:
 jobs:
   linting:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/asfopensarlab/osl-cq-image:dev
+      volumes:
+        - ${{ github.workspace }}:/code
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
-      - name: Install dependencies
+      - name: Lint Python
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install ruff
-
-      - name: ruff check
-        run: ruff check --output-format=github || (echo 'Run `ruff check --fix` to automatically fix errors where possible.' && exit 1)
+          cd /app
+          make python_lint_check
 
   formatting:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/asfopensarlab/osl-cq-image:dev
+      volumes:
+        - ${{ github.workspace }}:/code
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
-      - name: Install dependencies
+      - name: Python Format
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install ruff
-
-      - name: ruff format
-        run: ruff format --diff || (echo 'Run `ruff format` to automatically re-format.' && exit 1)
+          cd /app
+          make python_format_check
