@@ -34,7 +34,7 @@ help:
 	@echo "$$HELP_MESSAGE"
 
 docker_lint:
-	local RET=0; \
+	RET=0; \
 	for dockerfile in $$(bash -c 'find /code -name "Dockerfile"'); do \
 		echo "Checking $$dockerfile:"; \
 		hadolint $$dockerfile; \
@@ -45,7 +45,7 @@ docker_lint:
 	exit $$RET;
 
 jinja_lint:
-	local RET=0;
+	RET=0;
 	for jinjafile in $$(bash -c 'find /code -name "*.j2"'); do \
 		djlint $$jinjafile --lint; \
 		if [ $$? -ne 0 ]; then \
@@ -55,11 +55,11 @@ jinja_lint:
 	exit $$RET;
 
 jinja_format_check:
-	djlint /code --check --extension=j2
+	djlint /code --check --extension=j2 && \
 	djlint /code --check --extension=html
 
 jinja_format_fix:
-	djlint /code --reformat --extension=j2
+	djlint /code --reformat --extension=j2 && \
 	djlint /code --reformat --extension=html
 
 python_lint_check:
@@ -75,7 +75,7 @@ python_format_fix:
 	ruff format /code
 
 shell_lint:
-	local RET=0;
+	RET=0;
 	for shellfile in $$(bash -c 'find /code -name "*.sh"'); do \
 		echo "Checking $$shellfile:"; \
 		shellcheck $$shellfile ; \
@@ -92,7 +92,7 @@ shell_format_fix:
 	shfmt -w /code
 
 yaml_lint:
-	local RET=0;
+	RET=0;
 	for yamlfile in $$(bash -c 'find /code -name "*.yaml"'); do \
 		echo "Checking $$yamlfile:"; \
 		yamllint $$yamlfile ; \
@@ -104,7 +104,7 @@ yaml_lint:
 
 yaml_format_check:
 	yamlfmt -dry /code | tee out.txt && \
-	exit $$(test "$$(cat out.txt | wc -l)" -ne 0)
+	test -z "$$(cat out.txt)"
 
 yaml_format_fix:
 	yamlfmt /code
