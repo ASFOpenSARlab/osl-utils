@@ -34,16 +34,25 @@ help:
 	@echo "$$HELP_MESSAGE"
 
 docker_lint:
+	RET=0;
 	for dockerfile in $$(bash -c 'find /code -name "Dockerfile"'); do \
 		echo "Checking $$dockerfile:"; \
 		hadolint $$dockerfile; \
-		echo $$?; \
-	done
+		if [ $$? -ne 0 ]; then \
+			$$RET=1; \
+		fi; \
+	done; \
+	exit $$RET;
 
 jinja_lint:
+	RET=0;
 	for jinjafile in $$(bash -c 'find /code -name "*.j2"'); do \
 		djlint $$jinjafile --lint; \
-    done
+		if [ $$? -ne 0 ]; then \
+			$$RET=1; \
+		fi; \
+	done; \
+	exit $$RET;
 
 jinja_format_check:
 	djlint /code --check --extension=j2
@@ -66,10 +75,15 @@ python_format_fix:
 	ruff format /code
 
 shell_lint:
+	RET=0;
 	for shellfile in $$(bash -c 'find /code -name "*.sh"'); do \
 		echo "Checking $$shellfile:"; \
 		shellcheck $$shellfile ; \
-	done
+		if [ $$? -ne 0 ]; then \
+			$$RET=1; \
+		fi; \
+	done; \
+	exit $$RET;
 
 shell_format_check:
 	shfmt -d /code
@@ -78,14 +92,19 @@ shell_format_fix:
 	shfmt -w /code
 
 yaml_lint:
+	RET=0;
 	for yamlfile in $$(bash -c 'find /code -name "*.yaml"'); do \
 		echo "Checking $$yamlfile:"; \
 		yamllint $$yamlfile ; \
-	done
+		if [ $$? -ne 0 ]; then \
+			$$RET=1; \
+		fi; \
+	done; \
+	exit $$RET;
 
 yaml_format_check:
 	yamlfmt -dry /code | tee out.txt && \
-	exit $$(test -z "$$(cat out.txt)")
+	exit $$(test "$$(cat out.txt)" -ne 0)
 
 yaml_format_fix:
 	yamlfmt /code
