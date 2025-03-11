@@ -1,3 +1,4 @@
+name: Reusable - Code Quality - Jinja
 on:
   workflow_call:
 

@@ -1,3 +1,5 @@
+name: Reusable - Code Quality - Dockerfiles
+
 on:
   workflow_call:
 

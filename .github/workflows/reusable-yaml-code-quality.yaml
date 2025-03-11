@@ -1,3 +1,5 @@
+name: Reusable - Code Quality - YAML
+
 on:
   workflow_call:
 

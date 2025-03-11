@@ -1,3 +1,5 @@
+name: Reusable - Code Quality - Python
+
 on:
   workflow_call:
 

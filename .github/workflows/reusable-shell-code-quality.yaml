@@ -1,3 +1,5 @@
+name: Reusable - Code Quality - Shell
+
 on:
   workflow_call:
 
