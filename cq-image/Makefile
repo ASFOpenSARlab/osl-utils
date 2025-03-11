@@ -37,7 +37,7 @@ docker_lint:
 	for dockerfile in $$(bash -c 'find /code -name "Dockerfile"'); do \
 		echo "Checking $$dockerfile:"; \
 		hadolint $$dockerfile; \
-		echo $?; \
+		echo $$?; \
 	done
 
 jinja_lint:
