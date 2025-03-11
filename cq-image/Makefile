@@ -1,7 +1,6 @@
 .PHONY := lint check fix docker_lint jinja_lint python_lint_check shell_lint yaml_lint jinja_format_check python_format_check shell_format_check yaml_format_check jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix help
 
-all: 
-	$(MAKE) -k lint check
+all: lint check
 
 lint:
 	$(MAKE) -k docker_lint jinja_lint python_lint_check shell_lint yaml_lint
