@@ -37,6 +37,7 @@ docker_lint:
 	for dockerfile in $$(bash -c 'find /code -name "Dockerfile"'); do \
 		echo "Checking $$dockerfile:"; \
 		hadolint $$dockerfile; \
+		echo $?; \
 	done
 
 jinja_lint:
@@ -84,11 +85,7 @@ yaml_lint:
 
 yaml_format_check:
 	yamlfmt -dry /code | tee out.txt && \
-	if [ $$(cat out.txt | wc -l) -eq 0 ]; then \
-		exit 0; \
-	else \
-		exit 1; \
-	fi
+	exit $$(test -z "$$(cat out.txt)")
 
 yaml_format_fix:
 	yamlfmt /code
