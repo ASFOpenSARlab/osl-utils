@@ -103,7 +103,7 @@ yaml_lint:
 	exit $$RET;
 
 yaml_format_check:
-	yamlfmt -dry /code |& tee out.txt && \
+	yamlfmt -dry /code 2>&1 | tee out.txt && \
 	test -z "$$(cat out.txt)"
 
 yaml_format_fix:

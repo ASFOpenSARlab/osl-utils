@@ -3,10 +3,6 @@ name: Reusable - Code Quality - YAML
 on:
   workflow_call:
 
-defaults:
-  run:
-    shell: bash
-
 jobs:
   linting:
     runs-on: ubuntu-latest
