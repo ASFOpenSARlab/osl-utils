@@ -117,7 +117,7 @@ yaml_lint:
 yaml_format_check:
 	cd /code; \
 	yamlfmt -dry /code 2>&1 | tee /tmp/out.txt && \
-	test -z "$$(cat /tmp/out.txt)"
+	test "$$(cat /tmp/out.txt)" = "No files will be changed."
 
 yaml_format_fix:
 	cd /code; \
