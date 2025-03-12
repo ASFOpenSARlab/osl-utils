@@ -1,6 +1,6 @@
+---
 name: Docker Build
-
-on:
+on:  # yamllint disable-line rule:truthy
   # Manually trigger for dev:
   workflow_dispatch: {}
   # Only auto-run for test and prod:
@@ -9,9 +9,7 @@ on:
       - main
     tags:
       - "v*.*.*"
-
 jobs:
-
   docker-build:
     uses: ./.github/workflows/reusable-docker-build.yaml
     with:
