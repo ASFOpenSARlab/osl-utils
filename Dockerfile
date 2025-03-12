@@ -1,8 +1,15 @@
-FROM fedora:latest
+FROM fedora:41
 
 ## Install DNF Packages:
 RUN dnf upgrade -y && \
-    dnf install -y unzip make nodejs git make jq python3-pip && \
+    dnf install -y \
+    unzip \
+    make \
+    nodejs \
+    git \
+    make \
+    jq \
+    python3-pip && \
     dnf clean all
 
 ## Install AWS CLI v2:

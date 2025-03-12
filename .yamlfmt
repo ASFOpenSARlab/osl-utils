@@ -1,0 +1,3 @@
+formatter:
+  pad_line_comments: 2
+  include_document_start: true
