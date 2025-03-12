@@ -1,6 +1,7 @@
-.PHONY := lint check fix docker_lint jinja_lint python_lint_check shell_lint yaml_lint jinja_format_check python_format_check shell_format_check yaml_format_check jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix help
+.PHONY := all lint check fix docker_lint jinja_lint python_lint_check shell_lint yaml_lint jinja_format_check python_format_check shell_format_check yaml_format_check jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix help
 
-all: lint check
+all: 
+	$(MAKE) -k lint check
 
 lint:
 	$(MAKE) -k docker_lint jinja_lint python_lint_check shell_lint yaml_lint
@@ -115,8 +116,8 @@ yaml_lint:
 
 yaml_format_check:
 	cd /code; \
-	yamlfmt -dry /code 2>&1 | tee out.txt && \
-	test -z "$$(cat out.txt)"
+	yamlfmt -dry /code 2>&1 | tee /tmp/out.txt && \
+	test -z "$$(cat /tmp/out.txt)"
 
 yaml_format_fix:
 	cd /code; \
