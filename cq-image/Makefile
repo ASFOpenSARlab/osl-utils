@@ -36,7 +36,7 @@ help:
 docker_lint:
 	cd /code; \
 	RET=0; \
-	for dockerfile in $$(bash -c 'find /code -name "Dockerfile"'); do \
+	for dockerfile in $$(bash -c 'find /code -name "*Dockerfile"'); do \
 		echo "Checking $$dockerfile:"; \
 		hadolint $$dockerfile; \
 		if [ $$? -ne 0 ]; then \
