@@ -78,7 +78,7 @@ yaml_lint:
 	done
 
 yaml_format_check:
-	-yamlfmt -dry /code
+	-yamlfmt -dry -formatter trim_trailing_whitespace=true,include_document_start=true /code
 
 yaml_format_fix:
-	yamlfmt /code
+	yamlfmt -formatter trim_trailing_whitespace=true,include_document_start=true /code
