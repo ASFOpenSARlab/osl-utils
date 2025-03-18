@@ -37,7 +37,7 @@ docker_lint:
 	done
 
 jinja_lint:
-	-for jinjafile in $$(bash -c 'find /code -name "*.j2"'); do \
+	-for jinjafile in $$(bash -c 'find /code -name "*.j2" -o -name "*.jinja"'); do \
 		djlint $$jinjafile --lint; \
     done
 
@@ -73,7 +73,7 @@ shell_format_fix:
 	shfmt -w /code
 
 yaml_lint:
-	-for yamlfile in $$(find . -name '*.yaml'); do \
+	-for yamlfile in $$(find . -name '*.yaml' -o -name '*.yml'); do \
 		yamllint $$yamlfile ; \
 	done
 
