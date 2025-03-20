@@ -18,13 +18,13 @@ make lint: docker_lint jinja_lint python_lint_check shell_lint yaml_lint
 make check: jinja_format_check python_format_check shell_format_check yaml_format_check
 make fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix
 
-Dockerfile: 		`hadolint`		https://github.com/hadolint/hadolint/wiki
-Jinja:			`djlint`		https://www.djlint.com/docs/configuration/
-Python:			`ruff`			https://docs.astral.sh/ruff/
-Bash Linting:		`shellcheck`		https://www.shellcheck.net/wiki/Home
-Bash Formatting:	`shfmt`			https://github.com/patrickvane/shfmt
-YAML Linting:		`yamllint`		https://yamllint.readthedocs.io/en/stable/configuration.html
-YAML Formatting:	`yamlfmt`		https://github.com/google/yamlfmt/tree/main/docs
+Dockerfile:         `hadolint`      https://github.com/hadolint/hadolint/wiki
+Jinja:              `djlint`        https://www.djlint.com/docs/configuration/
+Python:             `ruff`          https://docs.astral.sh/ruff/
+Bash Linting:       `shellcheck`    https://www.shellcheck.net/wiki/Home
+Bash Formatting:    `shfmt`         https://github.com/patrickvane/shfmt
+YAML Linting:       `yamllint`      https://yamllint.readthedocs.io/en/stable/configuration.html
+YAML Formatting:    `yamlfmt`       https://github.com/google/yamlfmt/tree/main/docs
 
 endef
 
@@ -48,7 +48,7 @@ docker_lint:
 jinja_lint:
 	cd /code; \
 	RET=0; \
-	for jinjafile in $$(bash -c 'find /code -name "*.j2"'); do \
+	for jinjafile in $$(bash -c 'find /code -name "*.j2" -o -name "*.jinja"'); do \
 		djlint $$jinjafile --lint; \
 		if [ $$? -ne 0 ]; then \
 			RET=1; \
@@ -105,7 +105,7 @@ shell_format_fix:
 yaml_lint:
 	cd /code; \
 	RET=0; \
-	for yamlfile in $$(bash -c 'find /code -name "*.yaml"'); do \
+	for yamlfile in $$(bash -c 'find /code -name "*.yaml" -o -name "*.yml"'); do \
 		echo "Checking $$yamlfile:"; \
 		yamllint $$yamlfile ; \
 		if [ $$? -ne 0 ]; then \
@@ -116,9 +116,9 @@ yaml_lint:
 
 yaml_format_check:
 	cd /code; \
-	yamlfmt -dry /code 2>&1 | tee /tmp/out.txt && \
+	yamlfmt -dry -formatter trim_trailing_whitespace=true,include_document_start=true /code 2>&1 | tee /tmp/out.txt && \
 	test "$$(cat /tmp/out.txt)" = "No files will be changed."
 
 yaml_format_fix:
 	cd /code; \
-	yamlfmt /code
+	yamlfmt -formatter trim_trailing_whitespace=true,include_document_start=true /code
