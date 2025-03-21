@@ -11,8 +11,6 @@
             required: true
             type: string
             default: 'dev'
-          ICON_URL:
-            type: string
         secrets:
           MATTERMOST_WEBHOOK_URL:
             required: true
