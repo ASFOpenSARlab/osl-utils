@@ -30,4 +30,4 @@
               MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
               MATTERMOST_USERNAME: "Github Build Bot"
               MATTERMOST_CHANNEL: "services-private"
-              MATTERMOST_ICON_URL: ${{ inputs.ICON_URL || vars.ICON_URL }}
+              MATTERMOST_ICON_URL: "https://chat.asf.alaska.edu/api/v4/emoji/3uefpuf8b3d3u8ifdgw6ngcsbo/image"
