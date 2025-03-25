@@ -6,7 +6,7 @@ on:  # yamllint disable-line rule:truthy
 jobs:
   yaml:
     # yamllint disable-line rule:line-length
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-yaml-code-quality.yaml@dp/add-cq-image-to-cq-workflows
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-yaml-code-quality.yaml@v0.0.7
   dockerfile:
     # yamllint disable-line rule:line-length
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-dockerfile-code-quality.yaml@dp/add-cq-image-to-cq-workflows
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-dockerfile-code-quality.yaml@v0.0.7
