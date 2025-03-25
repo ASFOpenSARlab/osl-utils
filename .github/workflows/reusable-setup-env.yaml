@@ -86,7 +86,7 @@ jobs:
           echo "deploy_prefix=$DEPLOY_PREFIX" >> $GITHUB_OUTPUT
       - name: Make shortsha
         id: shortsha
-        run: |
+        run: |-
           export SHORTSHA=$(echo '${{ github.sha }}' | cut -c1-7)
           echo "shortsha=$SHORTSHA" >> $GITHUB_OUTPUT
           echo "shortsha: $SHORTSHA"

@@ -26,6 +26,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
       - name: Format yaml Files
-        run: |
+        run: |-
           cd /app
           make yaml_format_check

@@ -26,6 +26,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
       - name: Python Format
-        run: |
+        run: |-
           cd /app
           make python_format_check
