@@ -1,33 +1,31 @@
-on:
+---
+name: Reusable - Code Quality - Shell
+on:  # yamllint disable-line rule:truthy
   workflow_call:
-
 jobs:
   linting:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/asfopensarlab/osl-cq-image:main
+      volumes:
+        - ${{ github.workspace }}:/code
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Install shellcheck
-        run: |
-          sudo apt update
-          sudo apt install shellcheck
       - name: Lint Shell Files
         run: |
-          # Lint each shell file in repository
-          find . -name '*.sh' | while read file; do
-              shellcheck $file
-          done
-
+          cd /app
+          make shell_lint
   formatting:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/asfopensarlab/osl-cq-image:main
+      volumes:
+        - ${{ github.workspace }}:/code
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Install shfmt
-        run: |
-          sudo apt update
-          sudo apt install shfmt
       - name: Format Shell Files
-        run: |
-          shfmt -d . || (echo 'Run `shfmt -w .` to automatically re-format.' && exit 1)
-
+        run: |-
+          cd /app
+          make shell_format_check

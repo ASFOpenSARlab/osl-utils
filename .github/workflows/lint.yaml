@@ -1,0 +1,12 @@
+---
+name: Linting and Formatting
+on:  # yamllint disable-line rule:truthy
+  pull_request: {}
+  workflow_dispatch: {}
+jobs:
+  yaml:
+    # yamllint disable-line rule:line-length
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-yaml-code-quality.yaml@dp/add-cq-image-to-cq-workflows
+  dockerfile:
+    # yamllint disable-line rule:line-length
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-dockerfile-code-quality.yaml@dp/add-cq-image-to-cq-workflows
