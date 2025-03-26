@@ -21,6 +21,9 @@ on:  # yamllint disable-line rule:truthy
       build-args:
         required: false
         type: string
+    outputs:
+      container-uri:
+        value: ${{ jobs.docker-build.outputs.container-uri }}
       # An extra input ONLY because you can't check secrets in if blocks
       # for some reason...
       push-to-aws:

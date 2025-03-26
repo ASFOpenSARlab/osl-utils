@@ -1,12 +1,36 @@
 ---
 name: Linting and Formatting
-on:  # yamllint disable-line rule:truthy
-  pull_request: {}
-  workflow_dispatch: {}
+on:
+  workflow_call: {}
+
+
 jobs:
-  yaml:
-    # yamllint disable-line rule:line-length
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-yaml-code-quality.yaml@v0.0.7
-  dockerfile:
-    # yamllint disable-line rule:line-length
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-dockerfile-code-quality.yaml@v0.0.7
+
+  docker-build:
+    uses: ./.github/workflows/reusable-docker-build.yaml
+    with:
+      image-name: osl-utils
+
+  setup:
+    uses: ./.github/workflows/reusable-setup-env.yaml
+    with:
+      tagname: ${{ github.ref_name }}
+
+  ### All the Linting Now:
+  lint-docker:
+    runs-on: ubuntu-latest
+    needs:
+      - setup
+      - docker-build
+    container:
+      image: ${{ needs.docker-build.outputs.container-uri }}:${{ needs.setup.outputs.shortsha }}
+      volumes:
+        - ${{ github.workspace }}:/code
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Lint Dockerfiles
+        run: |-
+          cd /code
+          make docker_lint
