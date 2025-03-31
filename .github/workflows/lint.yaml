@@ -23,7 +23,7 @@ jobs:
       - setup
       - docker-build
     container:
-      image: ${{ needs.docker-build.outputs.container-uri }}:${{ needs.setup.outputs.shortsha }}
+      image: "${{ needs.docker-build.outputs.container-uri }}:${{ needs.setup.outputs.shortsha }}"
       volumes:
         - ${{ github.workspace }}:/code
     steps:
