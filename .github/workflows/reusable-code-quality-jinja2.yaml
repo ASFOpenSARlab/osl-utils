@@ -1,31 +1,37 @@
 ---
-name: Reusable - Code Quality - Shell
+name: Reusable - Code Quality - Jinja
 on:  # yamllint disable-line rule:truthy
   workflow_call:
+    inputs:
+      osl-utils-tag:
+        type: string
+        description: 'Tag of the osl-utils docker image to use'
+        required: true
+
 jobs:
   linting:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/asfopensarlab/osl-cq-image:main
+      image: ghcr.io/asfopensarlab/osl-utils:${{ inputs.osl-utils-tag }}
       volumes:
         - ${{ github.workspace }}:/code
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Lint Shell Files
+      - name: Lint jinja Files
         run: |
           cd /app
-          make shell_lint
+          make jinja_lint
   formatting:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/asfopensarlab/osl-cq-image:main
+      image: ghcr.io/asfopensarlab/osl-utils:${{ inputs.osl-utils-tag }}
       volumes:
         - ${{ github.workspace }}:/code
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Format Shell Files
+      - name: Format jinja Files
         run: |-
           cd /app
-          make shell_format_check
+          make jinja_format_check
