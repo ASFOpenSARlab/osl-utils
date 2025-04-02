@@ -12,6 +12,8 @@ RUN dnf upgrade -y && \
     jq \
     curl \
     python3 \
+    shellcheck \
+    shfmt \
     python3-pip && \
     dnf clean all
 
