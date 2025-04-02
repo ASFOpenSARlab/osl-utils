@@ -1,0 +1,23 @@
+---
+name: Reusable - Code Quality - Dockerfiles
+on:  # yamllint disable-line rule:truthy
+  workflow_call:
+    inputs:
+      osl-utils-tag:
+        type: string
+        description: 'Tag of the osl-utils docker image to use'
+        required: true
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/asfopensarlab/osl-utils:${{ inputs.osl-utils-tag }}
+      volumes:
+        - ${{ github.workspace }}:/code
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Lint Dockerfiles
+        run: |-
+          cd /app
+          make docker_lint
