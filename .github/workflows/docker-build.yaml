@@ -1,5 +1,5 @@
 ---
-name: Docker Build
+name: Docker Build - osl-utils
 on:  # yamllint disable-line rule:truthy
   # Manually trigger for dev:
   workflow_dispatch: {}
