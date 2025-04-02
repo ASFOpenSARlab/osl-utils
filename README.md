@@ -22,7 +22,7 @@ on:
 jobs:
   call-setup-env-workflow:
     # Docs at: https://github.com/ASFOpenSARlab/osl-utils?tab=readme-ov-file#reusable-setup-envyaml
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-setup-env.yaml@v<LATEST_TAG>
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-setup-env.yaml@v#.#.#
     with:
       tagname: ${{ github.ref_name }} # Optional; default shown
       aws-region: us-west-2           # Optional; default shown
@@ -75,15 +75,15 @@ To use these locally, add the following job to the `Makefile` inside your repo:
 ```makefile
 .PHONY := docker-shell
 docker-shell:
-	echo "Starting Docker Shell..."
-	echo ""
-	docker run \
-		-v "$$(pwd):/code" \
-		-it \
-		--rm \
-		--pull always \
-	ghcr.io/asfopensarlab/osl-utils:main \
-		bash
+  echo "Starting Docker Shell..."
+  echo ""
+  docker run \
+    -v "$$(pwd):/code" \
+    -it \
+    --rm \
+    --pull always \
+  ghcr.io/asfopensarlab/osl-utils:main \
+    bash
 ```
 
 Then you can do inside bash:
@@ -105,10 +105,10 @@ on:
 
 jobs:
   shell:
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-dockerfile.yaml@v<LATEST_TAG>
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-dockerfile.yaml@v#.#.#
     with:
       # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
-      osl-utils-tag: v<LATEST_TAG>
+      osl-utils-tag: v#.#.#
 ```
 
 ### [`reusable-code-quality-jinja2.yaml`](.github/workflows/reusable-code-quality-jinja2.yaml)
@@ -125,10 +125,10 @@ on:
 
 jobs:
   shell:
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-jinja2.yaml@v<LATEST_TAG>
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-jinja2.yaml@v#.#.#
     with:
       # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
-      osl-utils-tag: v<LATEST_TAG>
+      osl-utils-tag: v#.#.#
 ```
 
 ### [`reusable-code-quality-python.yaml`](.github/workflows/reusable-code-quality-python.yaml)
@@ -145,10 +145,10 @@ on:
 
 jobs:
   shell:
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-python.yaml@v<LATEST_TAG>
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-python.yaml@v#.#.#
     with:
       # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
-      osl-utils-tag: v<LATEST_TAG>
+      osl-utils-tag: v#.#.#
 ```
 
 ### [`reusable-code-quality-shell.yaml`](.github/workflows/reusable-code-quality-shell.yaml)
@@ -164,10 +164,10 @@ on:
 
 jobs:
   shell:
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-shell.yaml@v<LATEST_TAG>
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-shell.yaml@v#.#.#
     with:
       # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
-      osl-utils-tag: v<LATEST_TAG>
+      osl-utils-tag: v#.#.#
 ```
 
 ### [`reusable-code-quality-yaml.yaml`](.github/workflows/reusable-code-quality-yaml.yaml)
@@ -182,8 +182,8 @@ on:
 
 jobs:
   shell:
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-yaml.yaml@v<LATEST_TAG>
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-yaml.yaml@v#.#.#
     with:
       # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
-      osl-utils-tag: v<LATEST_TAG>
+      osl-utils-tag: v#.#.#
 ```
