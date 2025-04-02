@@ -70,6 +70,30 @@ When the image is built, it's tagged with the info from [`reusable-setup-env.yam
 
 ## Linting Workflows
 
+To use these locally, add the following job to the `Makefile` inside your repo:
+
+```makefile
+.PHONY := docker-shell
+docker-shell:
+	echo "Starting Docker Shell..."
+	echo ""
+	docker run \
+		-v "$$(pwd):/code" \
+		-it \
+		--rm \
+		--pull always \
+	ghcr.io/asfopensarlab/osl-utils:cs \
+		bash
+```
+
+Then you can do inside bash:
+
+```bash
+make docker-shell
+make help # See all the linting options. They're also what are called below inside any `reusable-code-quality-*.yaml` file.
+cd /code  # If you need to access the repo files inside the docker container
+```
+
 ### [`reusable-code-quality-dockerfile.yaml`](.github/workflows/reusable-code-quality-dockerfile.yaml)
 
 Uses [`hadolint`](https://github.com/hadolint/hadolint) to lint and format Dockerfiles.
