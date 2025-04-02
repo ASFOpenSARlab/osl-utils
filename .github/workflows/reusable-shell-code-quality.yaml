@@ -2,11 +2,17 @@
 name: Reusable - Code Quality - Shell
 on:  # yamllint disable-line rule:truthy
   workflow_call:
+    inputs:
+      osl-utils-tag:
+        type: string
+        description: 'Tag of the osl-utils docker image to use'
+        required: true
+
 jobs:
   linting:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/asfopensarlab/osl-cq-image:main
+      image: ghcr.io/asfopensarlab/osl-utils:${{ inputs.osl-utils-tag }}
       volumes:
         - ${{ github.workspace }}:/code
     steps:
@@ -16,10 +22,11 @@ jobs:
         run: |
           cd /app
           make shell_lint
+
   formatting:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/asfopensarlab/osl-cq-image:main
+      image: ghcr.io/asfopensarlab/osl-utils:${{ inputs.osl-utils-tag }}
       volumes:
         - ${{ github.workspace }}:/code
     steps:
