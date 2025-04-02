@@ -82,7 +82,7 @@ docker-shell:
 		-it \
 		--rm \
 		--pull always \
-	ghcr.io/asfopensarlab/osl-utils:cs \
+	ghcr.io/asfopensarlab/osl-utils:main \
 		bash
 ```
 
