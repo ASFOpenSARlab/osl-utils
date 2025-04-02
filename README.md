@@ -5,7 +5,7 @@ Using [HyP3's actions](https://github.com/ASFHyP3/actions) as an example to work
 
 ## Reusable Workflows
 
-A collection of [reusable workflows](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) that are shared accros this orginization.
+A collection of [reusable workflows](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) that are shared across this organization.
 
 ### [`reusable-setup-env.yaml`](.github/workflows/reusable-setup-env.yaml)
 
@@ -22,7 +22,7 @@ on:
 jobs:
   call-setup-env-workflow:
     # Docs at: https://github.com/ASFOpenSARlab/osl-utils?tab=readme-ov-file#reusable-setup-envyaml
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-setup-env.yaml@v0.0.2
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-setup-env.yaml@v#.#.#
     with:
       tagname: ${{ github.ref_name }} # Optional; default shown
       aws-region: us-west-2           # Optional; default shown
@@ -70,7 +70,31 @@ When the image is built, it's tagged with the info from [`reusable-setup-env.yam
 
 ## Linting Workflows
 
-### [`reusable-dockerfile-code-quality.yaml`](.github/workflows/reusable-dockerfile-code-quality.yaml)
+To use these locally, add the following job to the `Makefile` inside your repo:
+
+```makefile
+.PHONY := docker-shell
+docker-shell:
+  echo "Starting Docker Shell..."
+  echo ""
+  docker run \
+    -v "$$(pwd):/code" \
+    -it \
+    --rm \
+    --pull always \
+  ghcr.io/asfopensarlab/osl-utils:main \
+    bash
+```
+
+Then you can do inside bash:
+
+```bash
+make docker-shell
+make help # See all the linting options. They're also what are called below inside any `reusable-code-quality-*.yaml` file.
+cd /code  # If you need to access the repo files inside the docker container
+```
+
+### [`reusable-code-quality-dockerfile.yaml`](.github/workflows/reusable-code-quality-dockerfile.yaml)
 
 Uses [`hadolint`](https://github.com/hadolint/hadolint) to lint and format Dockerfiles.
 
@@ -81,11 +105,13 @@ on:
 
 jobs:
   shell:
-    uses:
-        ASFOpenSARlab/osl-utils/.github/workflows/reusable-dockerfile-code-quality.yaml@main
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-dockerfile.yaml@v#.#.#
+    with:
+      # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
+      osl-utils-tag: v#.#.#
 ```
 
-### [`reusable-jinja2-code-quality.yaml`](.github/workflows/reusable-jinja2-code-quality.yaml)
+### [`reusable-code-quality-jinja2.yaml`](.github/workflows/reusable-code-quality-jinja2.yaml)
 
 Uses [`djlint`](https://www.djlint.com/docs/getting-started/) to lint and format Jinja2
 templates. Per-repo configurations are available with a configuration file,
@@ -99,11 +125,13 @@ on:
 
 jobs:
   shell:
-    uses:
-        ASFOpenSARlab/osl-utils/.github/workflows/reusable-jinja2-code-quality.yaml@main
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-jinja2.yaml@v#.#.#
+    with:
+      # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
+      osl-utils-tag: v#.#.#
 ```
 
-### [`reusable-python-code-quality.yaml`](.github/workflows/reusable-python-code-quality.yaml)
+### [`reusable-code-quality-python.yaml`](.github/workflows/reusable-code-quality-python.yaml)
 
 Uses [Ruff](https://docs.astral.sh/ruff/) to lint and format Python source files.
 
@@ -117,11 +145,13 @@ on:
 
 jobs:
   shell:
-    uses:
-        ASFOpenSARlab/osl-utils/.github/workflows/reusable-python-code-quality.yaml@main
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-python.yaml@v#.#.#
+    with:
+      # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
+      osl-utils-tag: v#.#.#
 ```
 
-### [`reusable-shell-code-quality.yaml`](.github/workflows/reusable-shell-code-quality.yaml)
+### [`reusable-code-quality-shell.yaml`](.github/workflows/reusable-code-quality-shell.yaml)
 
 Uses [`shellcheck`](https://github.com/koalaman/shellcheck) and
 [`shfmt`](https://github.com/patrickvane/shfmt) to lint and format (respectively) shell
@@ -134,11 +164,13 @@ on:
 
 jobs:
   shell:
-    uses:
-        ASFOpenSARlab/osl-utils/.github/workflows/reusable-shell-code-quality.yaml@main
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-shell.yaml@v#.#.#
+    with:
+      # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
+      osl-utils-tag: v#.#.#
 ```
 
-### [`reusable-yaml-code-quality.yaml`](.github/workflows/reusable-yaml-code-quality.yaml)
+### [`reusable-code-quality-yaml.yaml`](.github/workflows/reusable-code-quality-yaml.yaml)
 
 Uses [ `yamllint` ](https://github.com/adrienverge/yamllint) and
 [ `yamlfmt` ](https://github.com/google/yamlfmt) to lint and format (respectively) YAML.
@@ -150,7 +182,8 @@ on:
 
 jobs:
   shell:
-    uses:
-        ASFOpenSARlab/osl-utils/.github/workflows/reusable-yaml-code-quality.yaml@main
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-yaml.yaml@v#.#.#
+    with:
+      # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
+      osl-utils-tag: v#.#.#
 ```
-
