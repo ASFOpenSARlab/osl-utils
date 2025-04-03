@@ -1,25 +1,25 @@
 .PHONY := all lint check fix help
-.PHONY := docker_lint jinja_lint python_lint_check shell_lint yaml_lint
+.PHONY := docker_lint jinja_lint python_lint_check shell_lint yaml_lint js_lint_check
 .PHONY := jinja_format_check python_format_check shell_format_check yaml_format_check html_format_check css_format_check js_format_check
-.PHONY := jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix html_format_fix css_format_fix js_format_fix
+.PHONY := jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix html_format_fix css_format_fix js_format_fix js_lint_fix
 
 all: 
 	$(MAKE) -k lint check
 
 lint:
-	$(MAKE) -k docker_lint jinja_lint python_lint_check shell_lint yaml_lint
+	$(MAKE) -k docker_lint jinja_lint python_lint_check shell_lint yaml_lint js_lint_check
 
 check:
 	$(MAKE) -k jinja_format_check python_format_check shell_format_check yaml_format_check html_format_check css_format_check js_format_check
 
-fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix html_format_fix css_format_fix js_format_fix
+fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix html_format_fix css_format_fix js_format_fix js_lint_fix
 
 define HELP_MESSAGE
 
 make all: lint check
-make lint: docker_lint jinja_lint python_lint_check shell_lint yaml_lint
+make lint: docker_lint jinja_lint python_lint_check shell_lint yaml_lint js_lint_check
 make check: jinja_format_check python_format_check shell_format_check yaml_format_check html_format_check css_format_check js_format_check
-make fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix html_format_fix css_format_fix js_format_fix
+make fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix html_format_fix css_format_fix js_format_fix js_lint_fix
 
 Dockerfile:                `hadolint`      https://github.com/hadolint/hadolint/wiki
 Jinja:                     `djlint`        https://www.djlint.com/docs/configuration/
@@ -28,6 +28,7 @@ Bash Linting:              `shellcheck`    https://www.shellcheck.net/wiki/Home
 Bash Formatting:           `shfmt`         https://github.com/patrickvane/shfmt
 YAML Linting:              `yamllint`      https://yamllint.readthedocs.io/en/stable/configuration.html
 YAML Formatting:           `yamlfmt`       https://github.com/google/yamlfmt/tree/main/docs
+JS Liniting:               `eslint`        https://eslint.org/
 Web (HTML,JS,CSS) Format:  `prettier`      https://prettier.io/
 
 endef
@@ -129,24 +130,32 @@ yaml_format_fix:
 
 html_format_check:
 	cd /code; \
-	prettier --no-error-on-unmatched-pattern --check **/*.{html,htm}
-
-css_format_check:
-	cd /code; \
-	prettier --no-error-on-unmatched-pattern --check **/*.{css,less,scss}
-
-js_format_check:
-	cd /code; \
-	prettier --no-error-on-unmatched-pattern --check **/*.{js,jsx,ts,tsx}
+	npx prettier --no-error-on-unmatched-pattern --check **/*.{html,htm}
 
 html_format_fix:
 	cd /code; \
-    prettier --no-error-on-unmatched-pattern --write **/*.{html,htm}
+    npx prettier --no-error-on-unmatched-pattern --write **/*.{html,htm}
+
+css_format_check:
+	cd /code; \
+	npx prettier --no-error-on-unmatched-pattern --check **/*.{css,less,scss}
 
 css_format_fix:
 	cd /code; \
-    prettier --no-error-on-unmatched-pattern --write **/*.{css,less,scss}
+    npx prettier --no-error-on-unmatched-pattern --write **/*.{css,less,scss}
+
+js_lint_check:
+	cd /code; \
+	npx eslint
+
+js_lint_fix:
+	cd /code; \
+	npx eslint --fix
+
+js_format_check:
+	cd /code; \
+	npx prettier --no-error-on-unmatched-pattern --check **/*.{js,jsx,ts,tsx}
 
 js_format_fix:
 	cd /code; \
-    prettier --no-error-on-unmatched-pattern --write **/*.{js,jsx,ts,tsx}
+    npx prettier --no-error-on-unmatched-pattern --write **/*.{js,jsx,ts,tsx}
