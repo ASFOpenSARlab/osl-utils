@@ -1,4 +1,4 @@
-.PHONY := all lint check fix docker_lint jinja_lint python_lint_check shell_lint yaml_lint jinja_format_check python_format_check shell_format_check yaml_format_check jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix help
+.PHONY := all lint check fix docker_lint jinja_lint python_lint_check shell_lint yaml_lint jinja_format_check python_format_check shell_format_check yaml_format_check web_format_check jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix web_format_fix help
 
 all: 
 	$(MAKE) -k lint check
@@ -7,24 +7,25 @@ lint:
 	$(MAKE) -k docker_lint jinja_lint python_lint_check shell_lint yaml_lint
 
 check:
-	$(MAKE) -k jinja_format_check python_format_check shell_format_check yaml_format_check
+	$(MAKE) -k jinja_format_check python_format_check shell_format_check yaml_format_check web_format_check
 
-fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix
+fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix web_format_fix
 
 define HELP_MESSAGE
 
 make all: lint check
 make lint: docker_lint jinja_lint python_lint_check shell_lint yaml_lint
-make check: jinja_format_check python_format_check shell_format_check yaml_format_check
-make fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix
+make check: jinja_format_check python_format_check shell_format_check yaml_format_check web_format_check
+make fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix web_format_fix
 
-Dockerfile:         `hadolint`      https://github.com/hadolint/hadolint/wiki
-Jinja:              `djlint`        https://www.djlint.com/docs/configuration/
-Python:             `ruff`          https://docs.astral.sh/ruff/
-Bash Linting:       `shellcheck`    https://www.shellcheck.net/wiki/Home
-Bash Formatting:    `shfmt`         https://github.com/patrickvane/shfmt
-YAML Linting:       `yamllint`      https://yamllint.readthedocs.io/en/stable/configuration.html
-YAML Formatting:    `yamlfmt`       https://github.com/google/yamlfmt/tree/main/docs
+Dockerfile:                `hadolint`      https://github.com/hadolint/hadolint/wiki
+Jinja:                     `djlint`        https://www.djlint.com/docs/configuration/
+Python:                    `ruff`          https://docs.astral.sh/ruff/
+Bash Linting:              `shellcheck`    https://www.shellcheck.net/wiki/Home
+Bash Formatting:           `shfmt`         https://github.com/patrickvane/shfmt
+YAML Linting:              `yamllint`      https://yamllint.readthedocs.io/en/stable/configuration.html
+YAML Formatting:           `yamlfmt`       https://github.com/google/yamlfmt/tree/main/docs
+Web (HTML,JS,CSS) Format:  `prettier`      https://prettier.io/
 
 endef
 
@@ -122,3 +123,11 @@ yaml_format_check:
 yaml_format_fix:
 	cd /code; \
 	yamlfmt -formatter trim_trailing_whitespace=true,include_document_start=true /code
+
+web_format_check:
+	cd /code; \
+	prettier --check "**/*.{js,jsx,ts,tsx,css,html,htm}"
+
+web_format_fix:
+	cd /code; \
+    prettier --write "**/*.{js,jsx,ts,tsx,css,html,htm}"

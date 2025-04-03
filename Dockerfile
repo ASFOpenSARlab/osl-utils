@@ -43,6 +43,10 @@ RUN npm install -g npm && \
 
 COPY ./requirements.txt /requirements.txt
 
+## Install Prettier formatter
+ARG prettier_version="v3.5.3"
+RUN npm install -g prettier@${prettier_version}
+
 # Install wheel first so it can be used with the rest of the packages
 # hadolint ignore=DL3013
 RUN python3 -m pip install --no-cache-dir --upgrade wheel && \
