@@ -7,27 +7,35 @@ import css from "@eslint/css";
 
 
 export default defineConfig([
+  // Reminder that ordering does matter. tseslint needs to come first so html can disable the type checking.
+  tseslint.configs.recommended,
   {
-    files: ["**/*.{js,mjs,cjs,ts}"],
-    languageOptions: { globals: globals.browser },
+    files: ["**/*.js", "**/*.jsx", "**/*.mjs", "**/*.cjs"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node
+      }
+    },
     plugins: { js },
     extends: ["js/recommended"]
   },
   {
-    files: ["**/*.html"],
-    ...html.configs["flat/recommended"]
+    files: ["**/*.html", "**/*.htm"],
+    extends: [tseslint.configs.disableTypeChecked],
+    ...html.configs["flat/recommended"],
   },
   {
-		files: ["**/*.css"],
-		plugins: { css },
-		language: "css/css",
-		languageOptions: { tolerant: false },
-		rules: { "css/no-empty-blocks": "error" },
-	},
-  tseslint.configs.recommended,
+    files: ["**/*.css"],
+    plugins: { css },
+    language: "css/css",
+    languageOptions: { tolerant: false },
+    rules: { "css/no-empty-blocks": "error" },
+  },
   globalIgnores([
     "**/build/**",
     "**/node_modules/**",
     "**/labextension/**"
   ])
 ]);
+
