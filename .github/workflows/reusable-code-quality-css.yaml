@@ -9,6 +9,20 @@ on:  # yamllint disable-line rule:truthy
         required: true
 
 jobs:
+  linting:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/asfopensarlab/osl-utils:${{ inputs.osl-utils-tag }}
+      volumes:
+        - ${{ github.workspace }}:/code
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Lint Python
+        run: |
+          cd /app
+          make css_lint_check
+
   formatting:
     runs-on: ubuntu-latest
     container:
