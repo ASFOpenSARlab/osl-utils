@@ -24,6 +24,20 @@ export default defineConfig([
     files: ["**/*.html", "**/*.htm"],
     extends: [tseslint.configs.disableTypeChecked],
     ...html.configs["flat/recommended"],
+    // Turn off styling rules so they don't interfere with Prettier
+    rules: {
+      "attrs-newline": "off",
+      "element-newline": "off",
+      "id-naming-convention": "off",
+      "indent": "off",
+      "lowercase": "off",
+      "max-element-depth": "off",
+      "no-extra-spacing-attrs": "off",
+      "no-multiple-empty-lines": "off",
+      "no-trailing-spaces": "off",
+      "quotes": "off",
+      "sort-attrs": "off",
+    }
   },
   {
     files: ["**/*.css"],
