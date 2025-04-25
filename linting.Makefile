@@ -1,30 +1,38 @@
-.PHONY := all lint check fix docker_lint jinja_lint python_lint_check shell_lint yaml_lint jinja_format_check python_format_check shell_format_check yaml_format_check jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix help
+.PHONY := all lint check fix help
+.PHONY := docker_lint jinja_lint python_lint_check shell_lint yaml_lint ts_lint_check css_lint_check html_lint_check
+.PHONY := jinja_format_check python_format_check shell_format_check yaml_format_check html_format_check css_format_check ts_format_check
+.PHONY := jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix html_lint_fix html_format_fix css_lint_fix css_format_fix ts_lint_fix ts_format_fix
 
 all: 
 	$(MAKE) -k lint check
 
 lint:
-	$(MAKE) -k docker_lint jinja_lint python_lint_check shell_lint yaml_lint
+	$(MAKE) -k docker_lint jinja_lint python_lint_check shell_lint yaml_lint ts_lint_check css_lint_check html_lint_check
 
 check:
-	$(MAKE) -k jinja_format_check python_format_check shell_format_check yaml_format_check
+	$(MAKE) -k jinja_format_check python_format_check shell_format_check yaml_format_check html_format_check css_format_check ts_format_check
 
-fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix
+fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix html_lint_fix html_format_fix css_lint_fix css_format_fix ts_lint_fix ts_format_fix
 
 define HELP_MESSAGE
 
 make all: lint check
-make lint: docker_lint jinja_lint python_lint_check shell_lint yaml_lint
-make check: jinja_format_check python_format_check shell_format_check yaml_format_check
-make fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix
+make lint: docker_lint jinja_lint python_lint_check shell_lint yaml_lint ts_lint_check css_lint_check html_lint_check
+make check: jinja_format_check python_format_check shell_format_check yaml_format_check html_format_check css_format_check ts_format_check
+make fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix html_lint_fix html_format_fix css_lint_fix css_format_fix ts_lint_fix ts_format_fix
 
-Dockerfile:         `hadolint`      https://github.com/hadolint/hadolint/wiki
-Jinja:              `djlint`        https://www.djlint.com/docs/configuration/
-Python:             `ruff`          https://docs.astral.sh/ruff/
-Bash Linting:       `shellcheck`    https://www.shellcheck.net/wiki/Home
-Bash Formatting:    `shfmt`         https://github.com/patrickvane/shfmt
-YAML Linting:       `yamllint`      https://yamllint.readthedocs.io/en/stable/configuration.html
-YAML Formatting:    `yamlfmt`       https://github.com/google/yamlfmt/tree/main/docs
+Dockerfile:                `hadolint`      https://github.com/hadolint/hadolint/wiki
+Jinja:                     `djlint`        https://www.djlint.com/docs/configuration/
+Python:                    `ruff`          https://docs.astral.sh/ruff/
+Bash Linting:              `shellcheck`    https://www.shellcheck.net/wiki/Home
+Bash Formatting:           `shfmt`         https://github.com/patrickvane/shfmt
+YAML Linting:              `yamllint`      https://yamllint.readthedocs.io/en/stable/configuration.html
+YAML Formatting:           `yamlfmt`       https://github.com/google/yamlfmt/tree/main/docs
+JS Liniting:               `eslint`        https://eslint.org/
+CSS Linting:               `eslint`        https://eslint.org/blog/2025/02/eslint-css-support/
+TS Linting:                `eslint`        https://typescript-eslint.io/ 
+HTML Linting:              `eslint`        https://html-eslint.org/
+Web (HTML,JS,CSS) Format:  `prettier`      https://prettier.io/
 
 endef
 
@@ -122,3 +130,51 @@ yaml_format_check:
 yaml_format_fix:
 	cd /code; \
 	yamlfmt -formatter trim_trailing_whitespace=true,include_document_start=true /code
+
+ts_lint_check:
+	cd /code; \
+	npx eslint "**/*.{js,jsx,mjs,cjs,ts,tsx}"
+
+css_lint_check:
+	cd /code; \
+	npx eslint "**/*.{css,scss}"
+
+html_lint_check:
+	cd /code; \
+	npx eslint "**/*.{html,htm}"
+
+ts_lint_fix:
+	cd /code; \
+	npx eslint --fix "**/*.{js,jsx,mjs,cjs,ts,tsx}"
+
+css_lint_fix:
+	cd /code; \
+	npx eslint --fix "**/*.{css,scss}"
+
+html_lint_fix:
+	cd /code; \
+	npx eslint --fix "**/*.{html,htm}"
+
+html_format_check:
+	cd /code; \
+	npx prettier --no-error-on-unmatched-pattern --check "**/*.{html,htm}"
+
+html_format_fix:
+	cd /code; \
+    npx prettier --no-error-on-unmatched-pattern --write "**/*.{html,htm}"
+
+css_format_check:
+	cd /code; \
+	npx prettier --no-error-on-unmatched-pattern --check "**/*.{css,less,scss}"
+
+css_format_fix:
+	cd /code; \
+    npx prettier --no-error-on-unmatched-pattern --write "**/*.{css,less,scss}"
+
+ts_format_check:
+	cd /code; \
+	npx prettier --no-error-on-unmatched-pattern --check "**/*.{js,jsx,mjs,cjs,ts,tsx}"
+
+ts_format_fix:
+	cd /code; \
+    npx prettier --no-error-on-unmatched-pattern --write **/*.{js,jsx,mjs,cjs,ts,tsx}

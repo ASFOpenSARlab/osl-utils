@@ -56,5 +56,10 @@ COPY ./requirements.txt /requirements.txt
 RUN python3 -m pip install --no-cache-dir --upgrade wheel && \
     python3 -m pip install --no-cache-dir -r /requirements.txt
 
+## Install other formatter and linters from package.json
+COPY ./eslint.config.mjs /eslint.config.mjs
+COPY ./package.json /package.json
+RUN npm install
+
 WORKDIR /app
 COPY linting.Makefile /app/Makefile
