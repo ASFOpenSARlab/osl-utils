@@ -9,7 +9,8 @@ RUN dnf upgrade -y && \
     bzip2 \
     unzip \
     make \
-    nodejs \
+    nodejs20 \
+    nodejs20-npm \
     git \
     make \
     jq \
@@ -45,6 +46,8 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 ## Install AWS CDK:
 # Install node/aws-cdk
 # hadolint ignore=DL3016
+RUN ln -s /usr/bin/npm-20 /usr/bin/npm
+RUN ln -s /usr/bin/node-20 /usr/bin/node
 RUN npm install -g aws-cdk
 
 COPY ./requirements.txt /requirements.txt
