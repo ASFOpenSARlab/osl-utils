@@ -4,18 +4,25 @@ FROM public.ecr.aws/amazonlinux/amazonlinux:2023
 # hadolint ignore=DL3041
 RUN dnf upgrade -y && \
     dnf install -y \
+    findutils \
+    tar \
+    bzip2 \
     unzip \
     make \
     nodejs \
     git \
     make \
     jq \
-    curl \
     python3 \
-    shellcheck \
-    shfmt \
     python3-pip && \
     dnf clean all
+
+## Install MicroMamba (conda):
+RUN curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+ENV PATH="$PATH:/root/.local/share/mamba/bin"
+
+## Install ShellFormat and ShellCheck:
+RUN micromamba install -y -c conda-forge go-shfmt shellcheck
 
 ## Install HadoLint:
 ARG hadolint_version="v2.12.0"
@@ -38,8 +45,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 ## Install AWS CDK:
 # Install node/aws-cdk
 # hadolint ignore=DL3016
-RUN npm install -g npm && \
-    npm install -g aws-cdk
+RUN npm install -g aws-cdk
 
 COPY ./requirements.txt /requirements.txt
 
