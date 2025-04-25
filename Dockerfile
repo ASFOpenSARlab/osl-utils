@@ -9,14 +9,15 @@ RUN dnf upgrade -y && \
     bzip2 \
     unzip \
     make \
-    nodejs20 \
-    nodejs20-npm \
     git \
     make \
     jq \
     python3 \
     python3-pip && \
     dnf clean all
+
+## Install Node and NPM:
+RUN curl -sL https://rpm.nodesource.com/setup_22.x | bash - && dnf update && dnf install -y nodejs
 
 ## Install MicroMamba (conda):
 RUN curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
@@ -46,8 +47,6 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 ## Install AWS CDK:
 # Install node/aws-cdk
 # hadolint ignore=DL3016
-RUN ln -s /usr/bin/npm-20 /usr/bin/npm
-RUN ln -s /usr/bin/node-20 /usr/bin/node
 RUN npm install -g aws-cdk
 
 COPY ./requirements.txt /requirements.txt
