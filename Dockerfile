@@ -1,4 +1,4 @@
-FROM fedora:41
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023
 
 ## Install DNF Packages:
 # hadolint ignore=DL3041
