@@ -12,8 +12,8 @@ RUN dnf upgrade -y && \
     git \
     make \
     jq \
-    python3 \
-    python3-pip && \
+    python3.11 \
+    python3.11-pip && \
     dnf clean all
 
 ## Install Node and NPM:
@@ -53,8 +53,8 @@ COPY ./requirements.txt /requirements.txt
 
 # Install wheel first so it can be used with the rest of the packages
 # hadolint ignore=DL3013
-RUN python3 -m pip install --no-cache-dir --upgrade wheel && \
-    python3 -m pip install --no-cache-dir -r /requirements.txt
+RUN python3.11 -m pip install --no-cache-dir --upgrade wheel && \
+    python3.11 -m pip install --no-cache-dir -r /requirements.txt
 
 WORKDIR /app
 COPY linting.Makefile /app/Makefile
