@@ -56,5 +56,10 @@ COPY ./requirements.txt /requirements.txt
 RUN python3.11 -m pip install --no-cache-dir --upgrade wheel && \
     python3.11 -m pip install --no-cache-dir -r /requirements.txt
 
+# python3.11 does not install convenience symlinks/alternatives
+ln -sf /bin/pip3.11 /bin/pip
+ln -sf /bin/python3.11 /bin/python3 
+ln -sf /bin/python3.11 /bin/python
+
 WORKDIR /app
 COPY linting.Makefile /app/Makefile
