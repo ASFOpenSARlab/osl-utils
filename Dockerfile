@@ -61,5 +61,10 @@ RUN ln -sf /usr/bin/pip3.11 /usr/bin/pip && \
     ln -sf /usr/bin/python3.11 /usr/bin/python3 && \
     ln -sf /usr/bin/python3.11 /usr/bin/python
 
+## Install other formatter and linters from package.json
+COPY ./eslint.config.mjs /eslint.config.mjs
+COPY ./package.json /package.json
+RUN npm install
+
 WORKDIR /app
 COPY linting.Makefile /app/Makefile

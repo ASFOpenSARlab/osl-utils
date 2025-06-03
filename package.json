@@ -1,0 +1,26 @@
+{
+    "name": "linter",
+    "version": "1.0.0",
+    "description": "",
+    "license": "ISC",
+    "author": "",
+    "type": "commonjs",
+    "main": "index.js",
+    "directories": {
+        "lib": "lib"
+    },
+    "scripts": {
+        "test": "npx eslint --help && npx prettier --help && exit 1"
+    },
+    "devDependencies": {
+        "@eslint/css": "^0.6.0",
+        "@eslint/js": "^9.23.0",
+        "@html-eslint/eslint-plugin": "^0.37.0",
+        "@html-eslint/parser": "^0.37.0",
+        "eslint": "^9.23.0",
+        "eslint-config-prettier": "^10.1.1",
+        "globals": "^16.0.0",
+        "typescript-eslint": "^8.29.0",
+        "prettier": "^3.5.3"
+    }
+}
