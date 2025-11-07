@@ -22,4 +22,6 @@ jobs:
 
       - name: Run Markdown Linting
         # Run it from /app, but the config points to /code to lint:
-        run: node --run lint:markdown /app
+        run: |
+          cd /app
+          node --run lint:markdown
