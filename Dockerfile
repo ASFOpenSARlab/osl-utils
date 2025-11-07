@@ -44,13 +44,8 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     unzip awscliv2.zip && \
     ./aws/install
 
-## Install AWS CDK:
-# Install node/aws-cdk
-# hadolint ignore=DL3016
-RUN npm install -g aws-cdk
-
+### PYTHON STUFF:
 COPY ./requirements.txt /requirements.txt
-
 # Install wheel first so it can be used with the rest of the packages
 # hadolint ignore=DL3013
 RUN python3.11 -m pip install --no-cache-dir --upgrade wheel && \
@@ -61,5 +56,18 @@ RUN ln -sf /usr/bin/pip3.11 /usr/bin/pip && \
     ln -sf /usr/bin/python3.11 /usr/bin/python3 && \
     ln -sf /usr/bin/python3.11 /usr/bin/python
 
+# Make the path, relative to here for the rest of the commands:
 WORKDIR /app
+
+### NODE STUFF:
+# Copy package.json and package-lock.json
+COPY package*.json .
+
+## Install AWS CDK:
+# Install aws-cdk, markdownlint stuff
+# hadolint ignore=DL3016
+RUN npm install --no-audit --no-fund
+
 COPY linting.Makefile /app/Makefile
+COPY .markdownlint.yaml /app/.markdownlint.yaml
+COPY .markdownlint-cli2.mjs /app/.markdownlint-cli2.mjs

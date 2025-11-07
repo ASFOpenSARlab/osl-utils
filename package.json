@@ -1,0 +1,12 @@
+{
+    "scripts": {
+        "lint:markdown": "markdownlint-cli2"
+    },
+    "devDependencies": {
+        "markdownlint-cli2": "^0.18.1",
+        "markdownlint-rule-relative-links": "^4.2.0"
+    },
+    "dependencies": {
+        "aws-cdk": "^2.1031.2"
+    }
+}
