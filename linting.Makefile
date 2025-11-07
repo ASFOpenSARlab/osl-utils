@@ -66,8 +66,8 @@ jinja_format_fix:
 	djlint /code --reformat --extension=j2; \
 	djlint /code --reformat --extension=html
 
+# NO `cd /code`, it points to /code in it's configs, but needs to be in /app
 markdown_lint:
-	cd /app; \
 	node --run lint:markdown
 
 python_lint_check:

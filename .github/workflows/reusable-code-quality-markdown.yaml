@@ -22,4 +22,5 @@ jobs:
 
       - name: Run Markdown Linting
         run: |
+          cd /app
           make markdown_lint
