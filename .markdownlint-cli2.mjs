@@ -15,6 +15,7 @@ const config = {
   globs: ["/code/**/*.md"],
   ignores: [
     "**/node_modules",
+    "**/.venv",
   ],
   customRules: [relativeLinksRule],
 }
