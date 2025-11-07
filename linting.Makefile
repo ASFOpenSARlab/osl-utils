@@ -14,7 +14,7 @@ fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_fo
 define HELP_MESSAGE
 
 make all: lint check
-make lint: docker_lint jinja_lint python_lint_check shell_lint yaml_lint
+make lint: docker_lint jinja_lint markdown_lint python_lint_check shell_lint yaml_lint
 make check: jinja_format_check python_format_check shell_format_check yaml_format_check
 make fix: jinja_format_fix python_lint_fix python_format_fix shell_format_fix yaml_format_fix
 
@@ -65,6 +65,10 @@ jinja_format_fix:
 	cd /code; \
 	djlint /code --reformat --extension=j2; \
 	djlint /code --reformat --extension=html
+
+# NO `cd /code`, it points to /code in it's configs, but needs to be in /app
+markdown_lint:
+	node --run lint:markdown
 
 python_lint_check:
 	cd /code; \

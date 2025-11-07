@@ -187,3 +187,20 @@ jobs:
       # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
       osl-utils-tag: v#.#.#
 ```
+
+### [`reusable-code-quality-markdown.yaml`](.github/workflows/reusable-code-quality-markdown.yaml)
+
+Uses [`markdownlint-cli2`](https://github.com/DavidAnson/markdownlint-cli2) to lint the markdown files themselves, and [`markdownlint-rule-relative-links`](https://github.com/theoludwig/markdownlint-rule-relative-links) to verify relative links.
+
+```yaml
+name: Lint Markdown
+on:
+    pull_request:
+
+jobs:
+  shell:
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-code-quality-markdown.yaml@v#.#.#
+    with:
+      # The osl-utils docker tag. Can also be `dev`, initials, etc. Should match the tag above in prod.
+      osl-utils-tag: v#.#.#
+```
