@@ -21,4 +21,5 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Run Markdown Linting
-        run: node --run lint:markdown
+        # Run it from /app, but the config points to /code to lint:
+        run: node --run lint:markdown /app
