@@ -19,3 +19,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v5
+
+      - name: Run Markdown Linting
+        run: node --run lint:markdown
