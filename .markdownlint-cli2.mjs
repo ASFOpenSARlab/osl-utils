@@ -16,6 +16,7 @@ const config = {
   ignores: [
     "**/node_modules",
     "**/.venv",
+    "**/cdk.out",
   ],
   customRules: [relativeLinksRule],
 }
