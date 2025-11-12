@@ -67,6 +67,8 @@ COPY package*.json .
 # Install aws-cdk, markdownlint stuff
 # hadolint ignore=DL3016
 RUN npm install --no-audit --no-fund
+# Force cdk to be a global install:
+RUN npm install -g aws-cdk
 
 COPY linting.Makefile /app/Makefile
 COPY .markdownlint.yaml /app/.markdownlint.yaml
