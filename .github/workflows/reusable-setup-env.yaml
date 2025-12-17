@@ -16,10 +16,10 @@ on:  # yamllint disable-line rule:truthy
         description: "Branch or Tag key for docker etc"
         value: ${{ jobs.setup.outputs.branchtag }}
       environment:
-        description: "Environment maturity (prod/test/dev)"
+        description: "Environment maturity (prod/stage/test/dev)"
         value: ${{ jobs.setup.outputs.environment }}
       deploy_prefix:
-        description: "Prefix of the Deployment (prod/test/<branch>)"
+        description: "Prefix of the Deployment (prod/stage/test/<branch>)"
         value: ${{ jobs.setup.outputs.deploy_prefix }}
       shortsha:
         description: "Short SHA for dockertag etc"
@@ -62,6 +62,8 @@ jobs:
         run: |
           if [[ "${{ steps.branchtag.outputs.branchtag }}" =~ ^v[[:digit:]] ]]; then
             export ENVIRONMENT='prod'
+          elif [[ "${{ steps.branchtag.outputs.branchtag }}" == 'stage' ]]; then
+            export ENVIRONMENT='stage'
           elif [[ "${{ steps.branchtag.outputs.branchtag }}" == 'main' ]]; then
             export ENVIRONMENT='test'
           else
@@ -75,6 +77,8 @@ jobs:
           echo "DEBUG - branchtag: ${{ steps.branchtag.outputs.branchtag }}"
           if [[ "${{ steps.environment.outputs.environment }}" == 'prod' ]]; then
             export DEPLOY_PREFIX="prod"
+          elif [[ "${{ steps.branchtag.outputs.branchtag }}" == 'stage' ]]; then
+            export DEPLOY_PREFIX="stage"
           elif [[ "${{ steps.branchtag.outputs.branchtag }}" == 'main' ]]; then
             export DEPLOY_PREFIX="test"
           else
