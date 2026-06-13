@@ -1,4 +1,7 @@
-FROM public.ecr.aws/amazonlinux/amazonlinux:2023
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023.11.20260526.0
+
+# Version lock to the current most recent version of AL2023: 2023.11.20260526.0
+# https://hub.docker.com/_/amazonlinux
 
 ## Install DNF Packages:
 # hadolint ignore=DL3041
@@ -12,8 +15,8 @@ RUN dnf upgrade -y && \
     git \
     make \
     jq \
-    python3.11 \
-    python3.11-pip && \
+    python3.13 \
+    python3.13-pip && \
     dnf clean all
 
 ## Install Node and NPM:
@@ -48,13 +51,13 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 COPY ./requirements.txt /requirements.txt
 # Install wheel first so it can be used with the rest of the packages
 # hadolint ignore=DL3013
-RUN python3.11 -m pip install --no-cache-dir --upgrade wheel && \
-    python3.11 -m pip install --no-cache-dir -r /requirements.txt
+RUN python3.13 -m pip install --no-cache-dir --upgrade wheel && \
+    python3.13 -m pip install --no-cache-dir -r /requirements.txt
 
-# python3.11 does not install convenience symlinks/alternatives
-RUN ln -sf /usr/bin/pip3.11 /usr/bin/pip && \
-    ln -sf /usr/bin/python3.11 /usr/bin/python3 && \
-    ln -sf /usr/bin/python3.11 /usr/bin/python
+# python3.13 does not install convenience symlinks/alternatives
+RUN ln -sf /usr/bin/pip3.13 /usr/bin/pip && \
+    ln -sf /usr/bin/python3.13 /usr/bin/python3 && \
+    ln -sf /usr/bin/python3.13 /usr/bin/python
 
 # Make the path, relative to here for the rest of the commands:
 WORKDIR /app
