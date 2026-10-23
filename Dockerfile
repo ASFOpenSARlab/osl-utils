@@ -1,6 +1,6 @@
-FROM public.ecr.aws/amazonlinux/amazonlinux:2023.11.20260526.0
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023.12.20261021.0
 
-# Version lock to the current most recent version of AL2023: 2023.11.20260526.0
+# Version lock to the current most recent version of AL2023: 2023.12.20261021.0
 # https://hub.docker.com/_/amazonlinux
 
 ## Install DNF Packages:
