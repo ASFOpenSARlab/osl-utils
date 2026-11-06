@@ -103,7 +103,7 @@ jobs:
           audience: ${{ inputs.audience }}
           role-to-assume: ${{ inputs.role-to-assume }}
           aws-region: ${{ inputs.aws-region }}
-      - if: inputs.push-to-aws
+      - if: ${{ inputs.push-to-aws && !inputs.use-oidc }}
         uses: aws-actions/configure-aws-credentials@v6.3.0
         id: aws-creds-creds
         with:
