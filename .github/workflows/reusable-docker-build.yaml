@@ -27,6 +27,17 @@ on:  # yamllint disable-line rule:truthy
         required: false
         type: boolean
         default: false
+      use-oidc:
+        required: false
+        type: boolean
+        default: false
+      audience:
+        required: false
+        type: string
+        default: sts.amazonaws.com
+      role-to-assume:
+        required: false
+        type: string
     outputs:
       container-uri:
         value: ${{ jobs.docker-build.outputs.container-uri }}
@@ -85,9 +96,16 @@ jobs:
       ### AWS ECR ###
       ###############
       # Optional: Push it to AWS too:
+      - if: ${{ inputs.push-to-aws && inputs.use-oidc }}
+        uses: aws-actions/configure-aws-credentials@v6.3.0
+        id: aws-creds-oidc
+        with:
+          audience: ${{ inputs.audience }}
+          role-to-assume: ${{ inputs.role-to-assume }}
+          aws-region: ${{ inputs.aws-region }}
       - if: inputs.push-to-aws
-        uses: aws-actions/configure-aws-credentials@v4
-        id: aws-creds
+        uses: aws-actions/configure-aws-credentials@v6.3.0
+        id: aws-creds-creds
         with:
           aws-access-key-id: ${{ secrets.aws-access-key-id }}
           aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
