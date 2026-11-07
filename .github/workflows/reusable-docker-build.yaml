@@ -35,6 +35,9 @@ on:  # yamllint disable-line rule:truthy
         required: false
         type: string
         default: sts.amazonaws.com
+      role-to-assume:
+        required: false
+        type: string
     outputs:
       container-uri:
         value: ${{ jobs.docker-build.outputs.container-uri }}
@@ -43,8 +46,6 @@ on:  # yamllint disable-line rule:truthy
       aws-access-key-id:
         required: false
       aws-secret-access-key:
-        required: false
-      role-to-assume:
         required: false
 jobs:
   setup:
