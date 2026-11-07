@@ -98,14 +98,14 @@ jobs:
       # Optional: Push it to AWS too:
       - if: ${{ inputs.push-to-aws && inputs.use-oidc }}
         uses: aws-actions/configure-aws-credentials@v6.3.0
-        id: aws-creds-oidc
+        id: aws-oidc
         with:
           audience: ${{ inputs.audience }}
           role-to-assume: ${{ inputs.role-to-assume }}
           aws-region: ${{ inputs.aws-region }}
       - if: ${{ inputs.push-to-aws && !inputs.use-oidc }}
         uses: aws-actions/configure-aws-credentials@v6.3.0
-        id: aws-creds-creds
+        id: aws-creds
         with:
           aws-access-key-id: ${{ secrets.aws-access-key-id }}
           aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
@@ -113,6 +113,18 @@ jobs:
       - if: inputs.push-to-aws
         uses: aws-actions/amazon-ecr-login@v2
       # Since the last one just finished, this should ALWAYS cache-hit:
+      - if: inputs.push-to-aws
+        id: get-aws-account-id
+        env:
+          USE_OIDC: inputs.use-oidc
+          OIDC_AWS_ACCT_ID: ${{ steps.aws-oidc.outputs.aws-account-id }}
+          CREDS_AWS_ACCT_ID: ${{ steps.aws-creds.outputs.aws-account-id }}
+        run: |
+          if [ "$USE_OIDC" = "true" ]; then
+            echo "aws-account-id=$OIDC_AWS_ACCT_ID" >> "$GITHUB_OUTPUT"
+          else
+            echo "aws-account-id=$CREDS_AWS_ACCT_ID" >> "$GITHUB_OUTPUT"
+          fi
       - if: inputs.push-to-aws
         uses: docker/build-push-action@v5
         with:
@@ -123,10 +135,10 @@ jobs:
           build-args: ${{ inputs.build-args }}
           # yamllint disable rule:line-length
           tags: |
-            ${{ steps.aws-creds.outputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.deploy_prefix }}
-            ${{ steps.aws-creds.outputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.shortsha }}
-            ${{ steps.aws-creds.outputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.branchtag }}
-            ${{ steps.aws-creds.outputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.environment }}
+            ${{ steps.get-aws-account-id.outputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.deploy_prefix }}
+            ${{ steps.get-aws-account-id.outputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.shortsha }}
+            ${{ steps.get-aws-account-id.outputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.branchtag }}
+            ${{ steps.get-aws-account-id.outputs.aws-account-id }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com/${{ inputs.image-name }}:${{ needs.setup.outputs.environment }}
           # yamllint enable rule:line-length
           cache-from: type=gha
           cache-to: type=gha,mode=max
