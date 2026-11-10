@@ -116,12 +116,10 @@ jobs:
       - if: inputs.push-to-aws
         id: get-aws-account-id
         env:
-          USE_OIDC: inputs.use-oidc
+          USE_OIDC: ${{ inputs.use-oidc }}
           OIDC_AWS_ACCT_ID: ${{ steps.aws-oidc.outputs.aws-account-id }}
           CREDS_AWS_ACCT_ID: ${{ steps.aws-creds.outputs.aws-account-id }}
         run: |
-          echo $OIDC_AWS_ACCT_ID
-          echo $CREDS_AWS_ACCT_ID
           if [ "$USE_OIDC" = "true" ]; then
             echo "aws-account-id=$OIDC_AWS_ACCT_ID" >> "$GITHUB_OUTPUT"
           else
